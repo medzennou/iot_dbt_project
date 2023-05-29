@@ -1,3 +1,4 @@
+{{ config(materialized="view") }}
 WITH streaming_data AS (
 SELECT
   datehour,
@@ -13,10 +14,5 @@ FROM
 ORDER BY datehour DESC
 )
 # calculate aggregations on stream for reporting:
-SELECT
- ROW_NUMBER() OVER() AS dashboard_sort,
- minute,
- COUNT(DISTINCT sensorID) AS total_sensor,
- Max(gpsspeed) AS max_gpsspeed,
+SELECT *
 FROM streaming_data
-GROUP BY minute, datehour
